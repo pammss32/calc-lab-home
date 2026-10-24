@@ -1,8 +1,20 @@
 // Pamir Ali Koc 260ADM044
-// https://github.com/pammss32/calc-lab-home
+// Repository: https://github.com/pammss32/calc-lab-home
 // Compile with: gcc -O2 -Wall -Wextra -std=c17 -o calc calc.c -lm
-// Resources used: OpenAI ChatGPT (parser implementation guidance and debugging).
+// Resources used: OpenAI ChatGPT (implementation guidance and debugging);
+// Theodore Norvell, "Parsing Expressions by Recursive Descent" —
+// https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm
+// University of Auckland, Computer Science 220 textbook —
+// https://www.cs.auckland.ac.nz/textbookCS220/ebook/DGW2.pdf
+// GNU C Language Manual — https://www.gnu.org/software/c-intro-and-ref/manual/c-intro-and-ref.html
+// Fahri Vatansever, "Algoritma Geliştirme ve Programlamaya Giriş" (2017).
+// Muhammet Yorulmaz and Seher Yorulmaz, "Programlamayı C ile Öğreniyorum" (2016).
+// Beykoz University, "Programlama Temelleri ve Algoritma" course information —
+// https://ects.beykoz.edu.tr/bilgipaketi/eobsakts/ders/ders_id/10003/program_kodu/0201001/h/0/s/1/st/M/ln/tr?submenuheader=0
+// Ankara University, "Operatörler" course notes —
+// https://acikders.ankara.edu.tr/pluginfile.php/58696/mod_resource/content/0/DersNotu_Operatorler.pdf
 // Conversation history: https://chatgpt.com/share/6add27e3-18e0-83eb-86a8-3e5873ac42f9
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
