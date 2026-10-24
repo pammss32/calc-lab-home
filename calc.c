@@ -1,12 +1,8 @@
-/*
- * Name: Pamir Ali Koc
- * Student ID: 260ADM044
- * Repository: https://github.com/pammss32/calc-lab-home
- * AI assistance: OpenAI ChatGPT was used for implementation guidance,
- * code development, debugging, and testing support.
- * Personal contribution: I reviewed the requirements, worked through
- * the implementation, and tested the program against the provided tests.
- */
+// Pamir Ali Koc 260ADM044
+// https://github.com/pammss32/calc-lab-home
+// Compile with: gcc -O2 -Wall -Wextra -std=c17 -o calc calc.c -lm
+// Resources used: OpenAI ChatGPT (parser implementation guidance and debugging).
+// Conversation history: https://chatgpt.com/share/6add27e3-18e0-83eb-86a8-3e5873ac42f9
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +13,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+#define STUDENT_FIRST_NAME "pamir"
 #define STUDENT_NAME "pamir_koc"
 #define STUDENT_ID "260ADM044"
 #define MAX_DEPTH 1000
@@ -54,6 +51,10 @@ static Value make_int(long long n)
     return v;
 }
 
+/*
+ * Values retain their type: if either operand is floating point, arithmetic
+ * is performed in double; otherwise operations preserve 64-bit integer results.
+ */
 static Value make_float(double n)
 {
     Value v;
@@ -63,8 +64,22 @@ static Value make_float(double n)
     return v;
 }
 
+/*
+ * Recursive-descent grammar, from lowest to highest precedence:
+ * expr -> term { ('+' | '-') term }
+ * term -> power { ('*' | '/') power }
+ * power -> primary [ '**' power ]
+ * primary -> NUMBER | '(' expr ')'
+ * Each level calls the next tighter level; power calls itself on the right,
+ * which makes exponentiation right-associative.
+ */
 static Value parse_expr(Parser *p);
 
+/*
+ * Parser positions are zero-based offsets into the complete input buffer.
+ * Convert the first failing offset to a 1-based file position here; callers
+ * add the line's absolute starting offset when reporting the error.
+ */
 static void set_error(Parser *p, size_t at)
 {
     if (!p->error) {
@@ -249,7 +264,12 @@ static Value parse_power(Parser *p)
         size_t exponent_start = p->pos;
         Value right = parse_power(p);
 
-        if (!p->error && !right.is_float && right.i < 0) {
+        /* The lab forbids negative exponents only for int ** int.
+         * A float operand selects double arithmetic, where negative exponents
+         * are valid (for example, 0.5 ** (0 - 1) == 2).
+         */
+        if (!p->error && !left.is_float &&
+            !right.is_float && right.i < 0) {
             set_error(p, exponent_start);
             return left;
         }
@@ -453,6 +473,11 @@ static int eval_line(const char *data, size_t len, size_t base,
     return 1;
 }
 
+/*
+ * Read the file into one growing buffer. Capacity doubles only when full,
+ * so large inputs are processed in linear time without repeatedly copying
+ * the entire accumulated file for each line.
+ */
 static char *read_all(FILE *f, size_t *length)
 {
     size_t cap = 8192;
@@ -727,21 +752,21 @@ int main(int argc, char **argv)
             if (default_out) {
                 snprintf(default_out, n + 1, "%.*s_%s_%s",
                          (int)name_len, start,
-                         STUDENT_NAME, STUDENT_ID);
+                         STUDENT_FIRST_NAME, STUDENT_ID);
             }
         } else {
             char *b = base_name(input);
 
             if (!b) return 1;
 
-            size_t n = strlen(b) + strlen(STUDENT_NAME) +
-                       strlen(STUDENT_ID) + 4;
+            size_t n = strlen(b) + strlen(STUDENT_FIRST_NAME) +
+                       strlen(STUDENT_ID) + 3;
 
             default_out = malloc(n);
 
             if (default_out) {
                 snprintf(default_out, n, "%s_%s_%s",
-                         b, STUDENT_NAME, STUDENT_ID);
+                         b, STUDENT_FIRST_NAME, STUDENT_ID);
             }
 
             free(b);
