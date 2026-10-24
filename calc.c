@@ -2,9 +2,10 @@
  * Name: Pamir Ali Koc
  * Student ID: 260ADM044
  * Repository: https://github.com/pammss32/calc-lab-home
- * Resources used: OpenAI ChatGPT, for explanation, debugging, and implementation guidance.
- * Prompt: Help me implement and understand an arithmetic parser in C for the RTU graded lab.
- * Conversation history: Add your shared conversation URL before submission.
+ * AI assistance: OpenAI ChatGPT was used for implementation guidance,
+ * code development, debugging, and testing support.
+ * Personal contribution: I reviewed the requirements, worked through
+ * the implementation, and tested the program against the provided tests.
  */
 #include <stdio.h>
 #include <stdlib.h>
